@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Add to cart</title>
+    </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: rgb(206, 206, 204);
+        }
+        .mainBody {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .divProducts {
+            width: 25%;
+            height: fit-content;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            padding: 10px 20px;
+            border-radius: 3px;
+            background: white;
+        }
+        .imgProduct {
+            width: 100%;
+        }
+
+        .buttonAdd {
+            background-color: aquamarine;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+        .buttonAdd:hover {
+            cursor: pointer;
+            background-color: rgb(68, 170, 136);
+        }
+
+        .cart {
+            width: 200px;
+            height: 500px;
+            background-color: white;
+            position: fixed;
+            top: 0px;
+            right: 0px;
+        }
+    </style>
+    <body>
+        <nav id="navbar">
+            <div class=""></div>
+        </nav>
+        <div class="cart" id="cart">
+            <span id="total">0</span>
+        </div>
+        <div class="mainBody" id="mainBody"></div>
+    </body>
+    <script>
+        const Items = [
+            {
+                name: "pc",
+                prix: 250000,
+                desc: "this is a pc",
+                src: "./img/1.png",
+            },
+            {
+                name: "gun",
+                prix: 500,
+                desc: "this is a gun",
+                src: "./img/",
+            },
+            {
+                name: "persone",
+                prix: 1,
+                desc: "this is a persone",
+                src: "./img/",
+            },
+            {
+                name: "maquillage",
+                prix: 55555555,
+                desc: "this is a maquillage",
+                src: "./img/",
+            },
+            {
+                name: "tacos",
+                prix: 550,
+                desc: "this is food",
+                src: "./img/",
+            },
+        ];
+        let cartArray = [];
+        const pricipalDiv = document.getElementById("mainBody");
+        for (const key in Items) {
+            const { name, desc, prix, src } = Items[key];
+            let newdiv = document.createElement("div");
+            newdiv.className = "divProducts";
+            newdiv.innerHTML = `<div class="name">${name}</div>
+            <div class="description">${desc}</div>
+            <img class="imgProduct" src="${src}" />
+            <div class="prix">${prix} DA</div>
+            <div class="buttonAdd" onclick="addToCart(${key})">add to cart</div>`;
+
+            pricipalDiv.appendChild(newdiv);
+        }
+
+        function addToCart(index) {
+            const cart = document.getElementById("cart");
+            let total = 0;
+            const { name, prix } = Items[index];
+            const cartArrIndex = cartArray.length;
+            cartArray.push({
+                name,
+                prix,
+                qte: 1,
+                index: cartArrIndex,
+            });
+            const newDiv = document.createElement("div");
+            newDiv.innerHTML = `<div class="name">${name}</div>
+            <div class="prix">${prix} DA</div>
+            <input class="inp" type="Number" min=1 max=10 onchange=changeQte(this,${cartArrIndex}) value=1  /> `;
+
+            cart.appendChild(newDiv);
+
+            totalCart();
+        }
+
+        function totalCart() {
+            let total = 0;
+            for (const object of cartArray) {
+                const { qte, prix } = object;
+                total += parseInt(qte) * parseInt(prix);
+            }
+            const tot = document.getElementById("total");
+            tot.innerText = total;
+        }
+
+        function changeQte(elem, index) {
+            const qte = parseInt(elem.value);
+
+            cartArray[index].qte = qte;
+            totalCart();
+        }
+    </script>
+</html>
